@@ -37,7 +37,7 @@
 - complete：接口调用完成时执行的回调函数，无论成功或失败都会执行。
 
 
-三个参数使用：
+使用如下：
 
 ```
 takeNativeActionWithCallback("login", // native方法命令
@@ -77,4 +77,4 @@ takeNativeActionWithCallback("login", // native方法命令
                 })
 ```
 
-
+如果不需要回调的情况，可不传回调函数。
