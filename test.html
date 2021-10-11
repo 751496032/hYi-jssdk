@@ -3,27 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<!--    <script type="text/javascript" src="hYi-sdk.js"></script>-->
+    <!--    <script type="text/javascript" src="hYi-sdk.js"></script>-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.0/hYi-sdk.js"></script>
     <script type="text/javascript">
 
         function test1() {
-            takeNativeActionWithCallback("login",
-                {
-                    targetClassName: "com.xxx"
+            takeNativeActionWithCallback("login", {
+                targetClassName: "com.xxx"
+            }, {
+                success: function (res) {
+                    console.log("success res: " + JSON.stringify(res))
                 },
-                {
-                    success: function (res) {
-                        console.log("success res: " + JSON.stringify(res))
-                    },
-                    fail: function (res) {
-                        console.log("fail res: " + JSON.stringify(res))
-                    },
-                    complete: function () {
-                        console.log("complete res ")
+                fail: function (res) {
+                    console.log("fail res: " + JSON.stringify(res))
+                },
+                complete: function () {
+                    console.log("complete res ")
 
-                    }
-                })
+                }
+            })
+        }
+
+
+        function login() {
+            console.log("login.");
+            window.takeNativeActionWithCallback("login", {
+                success: function (res) {
+                    console.log("success res: " + JSON.stringify(res))
+                    var element = document.createElement("div");
+                    element.appendChild(document.createTextNode("userName: " + res.accountName));
+                    document.getElementById('login_id').appendChild(element);
+                },
+                fail: function (res) {
+                    console.log("fail res: " + JSON.stringify(res))
+                },
+                complete: function () {
+                    console.log("complete res ")
+
+                }
+            });
         }
 
         function test2() {
@@ -46,7 +64,7 @@
         window.onload = function () {
             let btn = document.querySelector('.btn')
             btn.addEventListener('click', function () {
-                window.config({debug:true})
+                window.config({debug: true})
                 window.test2();
             }, true)
 
@@ -54,7 +72,7 @@
             callbackBtn.addEventListener('click', function () {
 
                 Object.keys(allCallbacks).forEach(function (key) {
-                    window.nativetoJsCallback(key, {result: 'ok'})
+                    window.nativetoJsCallback(key, {result:"ok"})
                 })
 
 
