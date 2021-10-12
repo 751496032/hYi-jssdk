@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-        <script type="text/javascript" src="hYi-sdk.js"></script>
-<!--    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.0/hYi-sdk.js"></script>-->
+<!--        <script type="text/javascript" src="hYi-sdk.js"></script>-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.1/hYi-sdk.js"></script>
     <script type="text/javascript">
 
         function test1() {
@@ -50,13 +50,16 @@
                     targetClassName: "com.xxx222",
                     success: function (res) {
                         console.log("success res: " + JSON.stringify(res))
+                        alert("success:登录成功")
                     },
                     fail: function (res) {
                         console.log("fail res: " + JSON.stringify(res))
                     },
                     complete: function () {
                         console.log("complete res ")
-
+                        setTimeout(function () {
+                            alert("complete:完成登录")
+                        },500)
                     }
                 })
         }
@@ -88,6 +91,14 @@
 <p>测试</p>
 <button class="btn">点击</button>
 <button class="callback">回调</button>
+
+<div>
+    <img src="https://img0.baidu.com/it/u=1283434782,3467728248&fm=26&fmt=auto">
+</div>
+<div>
+    <img src="https://img2.baidu.com/it/u=2173052120,291691545&fm=26&fmt=auto">
+</div>
+
 
 </body>
 
