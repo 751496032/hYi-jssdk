@@ -28,15 +28,14 @@
     config = function (configs) {
         window.constants.debug = configs["debug"]
         // 执行native对应的方法
-        // if (window.hYi === undefined){
-        //     return
-        // }
-
         if (window.constants.isAndroid){
-            console.log("android device")
+            console.log("android device config")
+            if (window.hYi === undefined){
+                return
+            }
             window.hYi.config(JSON.stringify(request))
         }else if (window.constants.isIOS){
-            console.log("ios device")
+            console.log("ios device config")
             window.webkit.messageHandlers.config.postMessage(JSON.stringify(request));
         }else {
             console.log("pc device")
@@ -98,14 +97,15 @@
             console.log("request：" + JSON.stringify(request))
         }
         // 执行native对应的方法
-        // if (window.hYi === undefined){
-        //     return
-        // }
+
         if (window.constants.isAndroid){
-            console.log("android device")
+            console.log("android device "+commandName)
+            if (window.hYi === undefined){
+                return
+            }
             window.hYi.takeNativeAction(JSON.stringify(request))
         }else if (window.constants.isIOS){
-            console.log("ios device")
+            console.log("ios device "+ commandName)
             window.webkit.messageHandlers.takeNativeAction.postMessage(JSON.stringify(request));
         }else {
             console.log("pc device")
