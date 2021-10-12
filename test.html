@@ -50,7 +50,7 @@
         }
 
         function test2() {
-            takeNativeActionWithCallback("login",
+            window.takeNativeActionWithCallback("login",
                 {
                     targetClassName: "com.xxx222",
                     success: function (res) {
@@ -96,6 +96,8 @@
 <p>测试</p>
 <button class="btn">点击</button>
 <button class="callback">回调</button>
+
+<div id="login_id"></div>
 
 <div>
     <img src="https://img0.baidu.com/it/u=1283434782,3467728248&fm=26&fmt=auto">
