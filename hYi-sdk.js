@@ -33,10 +33,10 @@
             if (window.hYi === undefined){
                 return
             }
-            window.hYi.config(JSON.stringify(request))
+            window.hYi.config(JSON.stringify(configs))
         }else if (window.constants.isIOS){
             console.log("ios device config")
-            window.webkit.messageHandlers.config.postMessage(JSON.stringify(request));
+            window.webkit.messageHandlers.config.postMessage(JSON.stringify(configs));
         }else {
             console.log("pc device")
         }
