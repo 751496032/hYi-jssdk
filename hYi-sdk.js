@@ -17,17 +17,31 @@
         constants.CALLBACK_SUCCESS = createConstant("CALLBACK_SUCCESS", "success")
         constants.CALLBACK_FAIL = createConstant("CALLBACK_FAIL", "fail")
         constants.CALLBACK_COMPLETE = createConstant("CALLBACK_COMPLETE", "complete")
+        constants.isIOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)
+        constants.isAndroid = /(Android)/i.test(navigator.userAgent)
     })(constants)
     window.constants = constants
+
+
 
 
     config = function (configs) {
         window.constants.debug = configs["debug"]
         // 执行native对应的方法
-        if (window.hYi === undefined){
-            return
+        // if (window.hYi === undefined){
+        //     return
+        // }
+
+        if (window.constants.isAndroid){
+            console.log("android device")
+            window.hYi.config(JSON.stringify(request))
+        }else if (window.constants.isIOS){
+            console.log("ios device")
+            window.webkit.messageHandlers.config.postMessage(JSON.stringify(request));
+        }else {
+            console.log("pc device")
         }
-        window.hYi.config()
+
     }
 
     /**
@@ -84,10 +98,19 @@
             console.log("request：" + JSON.stringify(request))
         }
         // 执行native对应的方法
-        if (window.hYi === undefined){
-            return
+        // if (window.hYi === undefined){
+        //     return
+        // }
+        if (window.constants.isAndroid){
+            console.log("android device")
+            window.hYi.takeNativeAction(JSON.stringify(request))
+        }else if (window.constants.isIOS){
+            console.log("ios device")
+            window.webkit.messageHandlers.takeNativeAction.postMessage(JSON.stringify(request));
+        }else {
+            console.log("pc device")
         }
-        window.hYi.takeNativeAction(JSON.stringify(request))
+
 
     }
 
