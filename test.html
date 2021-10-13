@@ -8,10 +8,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Title</title>
 
-<!--        <script type="text/javascript" src="hYi-sdk.js"></script>-->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.2/hYi-sdk.js"></script>
+    <script type="text/javascript" src="hYi-sdk.js"></script>
+    <!--    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.3/hYi-sdk.js"></script>-->
     <script type="text/javascript">
+        window.config({debug: true})
 
+        // 使用方式一
         function test1() {
             takeNativeActionWithCallback("login", {
                 targetClassName: "com.xxx"
@@ -29,26 +31,7 @@
             })
         }
 
-
-        function login() {
-            console.log("login.");
-            window.takeNativeActionWithCallback("login", {
-                success: function (res) {
-                    console.log("success res: " + JSON.stringify(res))
-                    var element = document.createElement("div");
-                    element.appendChild(document.createTextNode("userName: " + res.accountName));
-                    document.getElementById('login_id').appendChild(element);
-                },
-                fail: function (res) {
-                    console.log("fail res: " + JSON.stringify(res))
-                },
-                complete: function () {
-                    console.log("complete res ")
-
-                }
-            });
-        }
-
+        // 使用方式二
         function test2() {
             window.takeNativeActionWithCallback("login",
                 {
@@ -56,6 +39,7 @@
                     success: function (res) {
                         console.log("success res: " + JSON.stringify(res))
                         alert("success:登录成功")
+                        handleLoginSuccess(res)
                     },
                     fail: function (res) {
                         console.log("fail res: " + JSON.stringify(res))
@@ -64,23 +48,37 @@
                         console.log("complete res ")
                         setTimeout(function () {
                             alert("complete:完成登录")
-                        },500)
+                        }, 500)
                     }
                 })
         }
 
+
+        function handleLoginSuccess(res) {
+            console.log("success res: " + JSON.stringify(res))
+            let element = document.createElement("div");
+            element.appendChild(document.createTextNode("userName: lili"));
+            document.querySelector('.loginContent').appendChild(element);
+        }
+
+
         window.onload = function () {
             let btn = document.querySelector('.btn')
             btn.addEventListener('click', function () {
-                window.config({debug: true})
                 window.test2();
             }, true)
 
             let callbackBtn = document.querySelector('.callback')
             callbackBtn.addEventListener('click', function () {
-
+                if (Object.keys(allCallbacks).length === 0) {
+                    alert("没有回调函数")
+                    return
+                }
                 Object.keys(allCallbacks).forEach(function (key) {
-                    window.nativetoJsCallback(key, {result:"ok"})
+                    window.nativetoJsCallback(key, {result: "ok"})
+                    if (key.startsWith(window.constants.CALLBACK_SUCCESS)) {
+                        handleLoginSuccess({accountName: '测试'})
+                    }
                 })
 
 
@@ -94,10 +92,10 @@
 </head>
 <body>
 <p>测试</p>
-<button class="btn">点击</button>
-<button class="callback">回调</button>
+<button class="btn">请求</button>
+<button class="callback">手动回调</button>
 
-<div id="login_id"></div>
+<div class="loginContent"></div>
 
 <div>
     <img src="https://img0.baidu.com/it/u=1283434782,3467728248&fm=26&fmt=auto">

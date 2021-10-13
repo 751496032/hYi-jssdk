@@ -28,18 +28,20 @@
     config = function (configs) {
         window.constants.debug = configs["debug"]
         // 执行native对应的方法
-        if (window.constants.isAndroid){
-            console.log("android device config")
-            if (window.hYi === undefined){
-                return
+        try {
+            if (window.constants.isAndroid){
+                printLog("android device config")
+                window.hYi.config(JSON.stringify(configs))
+            }else if (window.constants.isIOS){
+                printLog("ios device config")
+                window.webkit.messageHandlers.config.postMessage(JSON.stringify(configs));
+            }else {
+                throw Error('config()函数不支持pc设备')
             }
-            window.hYi.config(JSON.stringify(configs))
-        }else if (window.constants.isIOS){
-            console.log("ios device config")
-            window.webkit.messageHandlers.config.postMessage(JSON.stringify(configs));
-        }else {
-            console.log("pc device")
+        }catch (e) {
+            printLog(e.message)
         }
+
 
     }
 
@@ -53,7 +55,7 @@
             if (callbackObj !== undefined) {
                 if (callbackObj.callback !== undefined) {
                     callbackObj.callback(response)
-                    delete allCallbacks[callbackKey] // 移除，防止内存泄漏
+                    unregisterCallback(callbackKey)
                 }
             }
         }
@@ -83,7 +85,7 @@
             param = params
         }
         if (window.constants.debug) {
-            console.log("allCallbacks：" + JSON.stringify(allCallbacks))
+            printLog("allCallbacks：" + JSON.stringify(allCallbacks))
         }
 
         let request = {}
@@ -94,24 +96,37 @@
          * {"name":"login","param":{"targetClassName":"com.xxx","callbackNameKeys":["success_nativetojs_callback_1633683965180_6434","fail_nativetojs_callback_1633683965180_6434","complete_nativetojs_callback_1633683965180_6434"]}}
          */
         if (window.constants.debug) {
-            console.log("request：" + JSON.stringify(request))
+            printLog("request：" + JSON.stringify(request))
         }
         // 执行native对应的方法
 
-        if (window.constants.isAndroid){
-            console.log("android device "+commandName)
-            if (window.hYi === undefined){
-                return
+        try {
+            if (window.constants.isAndroid){
+                printLog("android device "+commandName)
+                window.hYi.takeNativeAction(JSON.stringify(request))
+            }else if (window.constants.isIOS){
+                printLog("ios device "+ commandName)
+                window.webkit.messageHandlers.takeNativeAction.postMessage(JSON.stringify(request));
+            }else {
+                printLog("pc device")
+                throw Error('takeNativeActionWithCallback()函数不支持pc设备')
             }
-            window.hYi.takeNativeAction(JSON.stringify(request))
-        }else if (window.constants.isIOS){
-            console.log("ios device "+ commandName)
-            window.webkit.messageHandlers.takeNativeAction.postMessage(JSON.stringify(request));
-        }else {
-            console.log("pc device")
+        }catch (e){
+            for (let index in callbackNameKeys) {
+                unregisterCallback(callbackNameKeys[index])
+            }
+            console.error(e.message)
+            alert(e.message)
         }
 
+    }
 
+
+    printLog = function(message){
+        console.log(message)
+        // if (constants.debug){
+        //     printLog(message)
+        // }
     }
 
 
@@ -119,6 +134,10 @@
         let callbackNameKey = name + "_" + suffix
         callbackNameKeys.push(callbackNameKey)
         allCallbacks[callbackNameKey] = {callback: callback}
+    }
+
+    unregisterCallback = function (callbackNameKey) {
+        delete allCallbacks[callbackNameKey] // 移除，防止内存泄漏
     }
 
     hasCallbackMethod = function (params) {
