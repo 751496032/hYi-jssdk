@@ -4,16 +4,19 @@
 
 ## 步骤一：引入JS文件
 
-在需要调用JS接口的页面引入如下JS文件`https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.0/hYi-sdk.js`
+在需要调用JS接口的页面引入如下JS文件`https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@版本号/hYi-sdk.js`
+
+版本记录查看：https://github.com/751496032/hYi-jssdk/releases
 
 ```
-<!--    <script type="text/javascript" src="hYi-sdk.js"></script>-->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.0/hYi-sdk.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk@1.0.4/hYi-sdk.js"></script>
+    或者 默认使用最新版本
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/751496032/hYi-sdk/hYi-sdk.js"></script>
 ```
 
 ## 步骤二：配置全局参数
 
-通过调用`config()`函数配置全局参数，如下：
+通过调用`config()`函数配置全局参数，是可选的，如下：
 
 ```
 // 内部封装了js调用native的逻辑
@@ -78,3 +81,10 @@ takeNativeActionWithCallback("login", // native方法命令
 ```
 
 如果不需要回调的情况，可不传回调函数。
+
+## 测试
+
+可以与<https://github.com/751496032/MultiProcessWebView> 配合测试，是一个Android WebView独立进程的项目。
+
+
+
